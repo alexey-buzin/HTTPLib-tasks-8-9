@@ -34,7 +34,7 @@ std::string base64_decode(string s)
             mp[c] = c - 'a' + 26; // NOLINT
         }
         for (char c = '0'; c <= '9'; ++c) {
-            mp[c] = c - '0' + 52;  // NOLINT
+            mp[c] = c - '0' + 52; // NOLINT
         }
         mp['+'] = 62; // NOLINT
         mp['/'] = 63; // NOLINT
@@ -43,10 +43,10 @@ std::string base64_decode(string s)
 
     char ns[(s.size() * 3) / 4 + 1];
     ns[(s.size() * 3) / 4] = 0;
-    for (int i = 0; i < s.size() / 4; ++i) {
+    for (int i = 0; i < s.size() / 4; ++i) /*NOLINT*/ {
         int k =
-            mp[s[4 * i + 3]] + 64 * ((int)mp[s[4 * i + 2]] +  // NOLINT
-                                     64 * ((int)mp[s[4 * i + 1]] +  // NOLINT
+            mp[s[4 * i + 3]] + 64 * ((int)mp[s[4 * i + 2]] + // NOLINT
+                                     64 * ((int)mp[s[4 * i + 1]] + // NOLINT
                                            64 * (int)mp[s[4 * i]])); // NOLINT
 
         ns[3 * i + 2] = (k) % 256; // NOLINT
@@ -99,24 +99,24 @@ int main()
 
         std::hash<string> H;
         cout << login << " " << password << "\n";
-        cout << Hash[login] << "\n";
-        cout << H(salt[login] + password) << "\n";
+        // cout << Hash[login] << "\n";
+        // cout << H(salt[login] + password) << "\n";
         if (Hash.count(login) != 0) {
             if (H(salt[login] + password) == Hash[login]) {
                 string hi =
                     R"( Click <a href="http://127.0.0.1:8080/logout">here to log out</a> )";
                 hi = "hi " + login + hi;
                 res.set_content(hi, "text/html");
-                res.status = 200;  // NOLINT
+                res.status = 200; // NOLINT
                 cout << "logined\n";
                 return;
             }
-            res.status = 401;  // NOLINT
+            res.status = 401; // NOLINT
             res.set_content(R"( Incorrect password )", "text/html");
             cout << "Incorrect password \n";
             return;
         }
-        res.status = 401;  // NOLINT
+        res.status = 401; // NOLINT
         cout << "Incorrect username\n";
         res.set_content(
             R"( Incorrect username. Probably, you're not yet registered. 
@@ -152,6 +152,7 @@ int main()
                      res.set_content(R"( This login is already registered! 
             <a href="http://127.0.0.1:8080/login">sign in</a>)",
                                      "text/html");
+                     return;
                  }
                  salt[login] = std::to_string(rand());
                  std::hash<string> H;
