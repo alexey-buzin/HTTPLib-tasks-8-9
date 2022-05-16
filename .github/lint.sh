@@ -6,8 +6,8 @@ function countError {
 }
 trap countError ERR
 
-echo "# cppcheck"
-cppcheck --enable=warning,performance --error-exitcode=2 . && echo "OK" || false
+#echo "# cppcheck"
+#cppcheck --enable=warning,performance --error-exitcode=2 . && echo "OK" || false
 
 echo "# clang-tidy"
 # "--" should be last clang-tidy argument,

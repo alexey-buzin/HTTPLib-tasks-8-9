@@ -2,7 +2,7 @@
 #include <map>
 #include <random>
 
-#include "./../httplib.h"
+#include "httplib.h"
 
 using std::string;
 
@@ -75,12 +75,12 @@ int main()
             std::cout << value.first << ": " << value.second << std::endl;
         }
         // Запросить пароль:
-        res.status = 401;
+        res.status = 401; // NOLINT
         res.set_header("WWW-Authenticate",
                        "Basic realm=\"Enter username\", charset=\"UTF-8\"");
 
         string b64s = req.get_header_value("Authorization");
-        string in = base64_decode(b64s.erase(0, 6));
+        string in = base64_decode(b64s.erase(0, 6)); // NOLINT
         string login;
         string password;
         int b = 0;
@@ -125,7 +125,7 @@ int main()
     });
 
     // Завершить работу пользователя
-    svr.Get("/logout", [](const httplib::Request &, httplib::Response &res) {
+    svr.Get("/logout", [](const httplib::Request &req, httplib::Response &res) {
         res.set_content(R"(<a href="http://127.0.0.1:8080/login">sign in</a>)",
                         "text/html");
     });
@@ -167,5 +167,5 @@ int main()
     // запуск сервера:
     // "слушает" (ожидает запросы) на порту с номером 8080
     // адрес 0.0.0.0 — на всех доступных IP-адресах
-    svr.listen("0.0.0.0", 8080);
+    svr.listen("0.0.0.0", 8080); // NOLINT
 }
